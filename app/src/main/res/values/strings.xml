@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AvitoMusic</string>
+    <string name="search">Search</string>
+    <string name="saved">Saved</string>
 </resources>

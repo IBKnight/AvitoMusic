@@ -2,6 +2,14 @@ package com.avito.avitomusic.features.music_list.domain.models
 
 import com.google.gson.annotations.SerializedName
 
+data class TracksResponse(
+    @SerializedName("tracks") val tracks: Tracks
+)
+
+data class Tracks(
+    @SerializedName("data") val data: List<TrackModel>
+)
+
 data class TrackModel (
     val id: Long,
     val title: String,

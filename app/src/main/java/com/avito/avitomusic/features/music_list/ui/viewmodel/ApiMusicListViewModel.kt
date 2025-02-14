@@ -26,6 +26,7 @@ class ApiMusicListViewModel @Inject constructor(
             _state.value = MusicListState.Loading
             try {
                 val tracks = repository.getList()
+
                 _state.value = MusicListState.Loaded(tracks)
             } catch (e: Exception) {
                 _state.value = MusicListState.Error("Ошибка загрузки: ${e.message}")

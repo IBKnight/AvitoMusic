@@ -14,9 +14,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.avito.avitomusic.common.components.Routes
@@ -48,10 +51,22 @@ fun MusicListItem(track: TrackModel, modifier: Modifier = Modifier) {
                 )
             }
             Spacer(modifier.width(8.dp))
-            Column {
-                Text(track.title, color = MaterialTheme.colorScheme.secondary)
-                Spacer(modifier.height(16.dp))
-                Text(track.artist.name)
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .align(Alignment.CenterVertically)
+            ) {
+                Text(
+                    track.title, fontSize = 16.sp,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+                Spacer(modifier.height(1.dp))
+                Text(
+                    track.artist.name,
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 14.sp
+                )
             }
         }
     }

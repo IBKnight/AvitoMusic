@@ -1,22 +1,15 @@
 package com.avito.avitomusic.features.music_list.ui.components
 
 
-import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -28,9 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.avito.avitomusic.features.music_list.domain.models.TrackModel
 import com.avito.avitomusic.features.music_list.ui.MusicListState
 import com.avito.avitomusic.features.music_list.ui.viewmodel.ApiMusicListViewModel
 
@@ -41,6 +32,7 @@ fun MusicListScreen(
 ) {
     // Подписываемся на состояние из ViewModel
     val state by viewModel.state.collectAsState()
+
 
     // Загружаем данные при первом запуске
     LaunchedEffect(Unit) {
@@ -53,9 +45,10 @@ fun MusicListScreen(
             SearchBar(query, { newValue ->
                 query = newValue
             }, onSearch = {
-                viewModel.searchTracks(query)
+                if (query.isEmpty()) else viewModel.searchTracks(query)
+
             })
-            when (state) {
+            when (val currentState = state) {
                 is MusicListState.Loading -> Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -63,15 +56,18 @@ fun MusicListScreen(
                     CircularProgressIndicator()
                 }
 
-                is MusicListState.Loaded -> LazyColumn {
-                    items((state as MusicListState.Loaded).tracks) { track ->
+                is MusicListState.Loaded -> LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(16.dp)
+                ) {
+                    items((currentState as MusicListState.Loaded).tracks) { track ->
                         MusicListItem(
                             track = track,
                         )
                     }
                 }
 
-                is MusicListState.Error -> Text((state as MusicListState.Error).message)
+                is MusicListState.Error -> Text((currentState as MusicListState.Error).message)
             }
         }
 
@@ -79,10 +75,3 @@ fun MusicListScreen(
     }
 
 }
-
-@Composable
-fun TrackListScreen(tracks: List<TrackModel>) {
-
-
-}
-

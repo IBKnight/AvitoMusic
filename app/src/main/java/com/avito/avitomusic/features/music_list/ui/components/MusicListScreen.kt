@@ -60,14 +60,14 @@ fun MusicListScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(16.dp)
                 ) {
-                    items((currentState as MusicListState.Loaded).tracks) { track ->
+                    items((currentState).tracks) { track ->
                         MusicListItem(
                             track = track,
                         )
                     }
                 }
 
-                is MusicListState.Error -> Text((currentState as MusicListState.Error).message)
+                is MusicListState.Error -> Text((currentState).message)
             }
         }
 

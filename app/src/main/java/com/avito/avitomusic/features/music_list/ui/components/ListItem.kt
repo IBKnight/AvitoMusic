@@ -20,9 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.avito.avitomusic.common.components.Routes
 import com.avito.avitomusic.features.music_list.domain.models.TrackModel
 
 @Composable

@@ -14,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.avito.avitomusic.R
 
 @Composable
 fun SearchBar(
@@ -39,11 +41,11 @@ fun SearchBar(
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
             ),
-                    placeholder = { Text("Search tracks...") }
+                    placeholder = { Text(stringResource(id = R.string.search_tracks)) }
         )
         Spacer(modifier = Modifier.width(8.dp))
         Button(onClick = onSearch) {
-            Text("Search")
+            Text(stringResource(id = R.string.search))
         }
     }
 }

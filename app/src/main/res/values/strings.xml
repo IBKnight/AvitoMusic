@@ -2,4 +2,7 @@
     <string name="app_name">AvitoMusic</string>
     <string name="search">Search</string>
     <string name="saved">Saved</string>
+    <string name="need_permission">You need permission to access the music.</string>
+    <string name="request_permission">Request permission</string>
+    <string name="search_tracks">Search tracks...</string>
 </resources>

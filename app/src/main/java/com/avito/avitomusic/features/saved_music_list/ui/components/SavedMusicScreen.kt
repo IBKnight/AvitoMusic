@@ -15,7 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.avito.avitomusic.R
+import com.avito.avitomusic.common.components.Routes
 import com.avito.avitomusic.features.music_list.ui.components.SearchBar
 import com.avito.avitomusic.features.saved_music_list.ui.SavedMusicState
 import com.avito.avitomusic.features.saved_music_list.ui.viewmodels.SavedMusicViewModel
@@ -25,7 +27,11 @@ import com.google.accompanist.permissions.rememberPermissionState
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun SavedMusicScreen(viewModel: SavedMusicViewModel = hiltViewModel(), context: Context) {
+fun SavedMusicScreen(
+    viewModel: SavedMusicViewModel = hiltViewModel(),
+    context: Context,
+    navController: NavController
+) {
 
     val permission = remember {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -81,7 +87,7 @@ fun SavedMusicScreen(viewModel: SavedMusicViewModel = hiltViewModel(), context: 
                             SavedMusicListItem(
                                 track = track,
                                 onClick = {
-                                    println("Clicked on track: ${track.path}")
+                                    navController.navigate("${Routes.PLAYER.route}/${track.id}/${-1}")
                                 }
                             )
                             Spacer(modifier = Modifier.height(8.dp))

@@ -1,11 +1,14 @@
 package com.avito.avitomusic.features.saved_music_list.domain.models
 
 import android.net.Uri
+import com.avito.avitomusic.common.data.model.ApiTrack
 
-data class SavedTracksModel (
-    val id: Long,
-    val title: String,
+data class SavedTracksModel(
+    override val id: Long,
+    override val title: String,
     val artist: String,
-    val duration: Long,
-    val path: String,
-    val uri: Uri)
+    override val duration: Long,
+    //Путь до трека
+    override val preview: String,
+    val uri: Uri,
+): ApiTrack()

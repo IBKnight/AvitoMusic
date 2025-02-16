@@ -1,4 +1,4 @@
-package com.avito.avitomusic.features.music_player.ui
+package com.avito.avitomusic.features.music_player.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,26 +7,27 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import android.media.MediaPlayer
 import android.util.Log
-import com.avito.avitomusic.common.data.model.Track
+import com.avito.avitomusic.common.data.model.ApiTrack
 import com.avito.avitomusic.features.music_player.domain.repository.IPlayerRepository
+import com.avito.avitomusic.features.saved_music_list.domain.repository.ISavedMusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
-    private val repository: IPlayerRepository
+    private val repository: IPlayerRepository,
 ) : ViewModel() {
 
     private val mediaPlayer = MediaPlayer()
 
     // Список треков
-    private val _tracks = MutableStateFlow<List<Track>>(emptyList())
-    val tracks: StateFlow<List<Track>> = _tracks
+    private val _tracks = MutableStateFlow<List<ApiTrack>>(emptyList())
+    val tracks: StateFlow<List<ApiTrack>> = _tracks
 
     // Текущий трек
-    private val _currentTrack = MutableStateFlow<Track?>(null)
-    val currentTrack: StateFlow<Track?> = _currentTrack
+    private val _currentTrack = MutableStateFlow<ApiTrack?>(null)
+    val currentTrack: StateFlow<ApiTrack?> = _currentTrack
 
     // Прогресс воспроизведения
     private val _progress = MutableStateFlow(0f)
@@ -55,7 +56,7 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
-    private fun playTrack(track: Track) {
+    private fun playTrack(track: ApiTrack) {
         mediaPlayer.reset()
         mediaPlayer.setDataSource(track.preview)
         mediaPlayer.prepareAsync()
@@ -85,22 +86,30 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun nextTrack() {
-        Log.i("nextTrack", "${_tracks.value.size}")
+        var currentIndex = _tracks.value.indexOfFirst {
+            it.id == _currentTrack.value?.id
+        }
+        Log.i("nextTrack", "$currentIndex")
 
-        var currentIndex = _tracks.value.indexOfFirst { it.id == _currentTrack.value?.id }
         if (currentIndex != -1 && currentIndex < _tracks.value.size - 1) {
             currentIndex += 1
             _currentTrack.value = _tracks.value[currentIndex]
             playTrack(_tracks.value[currentIndex])
+        } else {
+            currentIndex = 0
+            _currentTrack.value = _tracks.value[currentIndex]
         }
         Log.i("nextTrack", "$currentIndex")
     }
 
     fun previousTrack() {
-        val currentIndex = _tracks.value.indexOfFirst { it.id == _currentTrack.value?.id }
+        var currentIndex = _tracks.value.indexOfFirst { it.id == _currentTrack.value?.id }
         if (currentIndex > 0) {
-            playTrack(_tracks.value[currentIndex - 1])
+            currentIndex -= 1
+            _currentTrack.value = _tracks.value[currentIndex]
+            playTrack(_tracks.value[currentIndex])
         }
+
         Log.i("previousTrack", "$currentIndex")
 
     }

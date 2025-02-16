@@ -1,5 +1,7 @@
-package com.avito.avitomusic.features.music_player.ui
+package com.avito.avitomusic.features.music_player.ui.components
 
+import android.R.mipmap.sym_def_app_icon
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -10,10 +12,19 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.avito.avitomusic.R
+import com.avito.avitomusic.common.data.model.ApiTrack
+import com.avito.avitomusic.features.music_list.domain.models.TrackModel
+import com.avito.avitomusic.features.music_player.domain.models.TrackListItemModel
+import com.avito.avitomusic.features.music_player.ui.viewmodels.PlayerViewModel
 
+@SuppressLint("ResourceType")
 @Composable
 fun PlayerScreen(
     trackID: Long,
@@ -48,11 +59,15 @@ fun PlayerScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AsyncImage(
-            model = currentTrack?.artist?.picture, // Используем URI для загрузки изображения
-            contentDescription = null,
-            modifier = Modifier.size(200.dp)
-        )
+//        AsyncImage(
+//
+//            model = ContextCompat.getDrawable(LocalContext.current, R.drawable.avito_logo),
+//            //.artist?.picture,
+//            contentDescription = null,
+//            modifier = Modifier.size(400.dp),
+//
+//        )
+        TrackImage(currentTrack)
 
         Text(
             text = currentTrack?.title ?: "No track selected",
@@ -104,10 +119,22 @@ fun PlayerScreen(
     }
 }
 
+@Composable
+fun TrackImage(currentTrack: ApiTrack?) {
+    AsyncImage(
+        model = when (currentTrack) {
+            is TrackModel -> currentTrack.artist.picture
+            is TrackListItemModel -> currentTrack.artist.picture
+            else -> ContextCompat.getDrawable(LocalContext.current, R.drawable.avito_logo)
+        },
+        contentDescription = null,
+        modifier = Modifier.size(400.dp)
+    )
+}
 
 fun formatTime(seconds: Int): String {
-    TODO("перенести в utils")
     val minutes = seconds / 60
     val secs = seconds % 60
     return String.format("%02d:%02d", minutes, secs)
+    TODO("перенести в utils")
 }

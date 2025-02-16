@@ -9,7 +9,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiMusicDataSource {
-    @GET("chart/")
+    @GET("chart")
     suspend fun getChart(): TracksResponse
 
     @GET("search")

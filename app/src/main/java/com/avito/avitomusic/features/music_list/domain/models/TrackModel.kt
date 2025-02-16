@@ -1,6 +1,6 @@
 package com.avito.avitomusic.features.music_list.domain.models
 
-import com.avito.avitomusic.common.data.model.Track
+import com.avito.avitomusic.common.data.model.ApiTrack
 import com.google.gson.annotations.SerializedName
 
 data class TracksResponse(
@@ -11,33 +11,33 @@ data class Tracks(
     @SerializedName("data") val data: List<TrackModel>
 )
 
-data class TrackModel (
+data class TrackModel(
     override val id: Long,
     override val title: String,
 
     @SerializedName("title_short")
-    override val titleShort: String,
+    val titleShort: String,
 
-    override val link: String,
+    val link: String,
     override val duration: Long,
-    override val rank: Long,
+    val rank: Long,
 
     @SerializedName("explicit_lyrics")
-    override val explicitLyrics: Boolean,
+    val explicitLyrics: Boolean,
 
     @SerializedName("explicit_content_lyrics")
-    override val explicitContentLyrics: Long,
+    val explicitContentLyrics: Long,
 
     @SerializedName("explicit_content_cover")
-    override val explicitContentCover: Long,
+    val explicitContentCover: Long,
 
     override val preview: String,
 
     @SerializedName("md5_image")
-    override val md5Image: String,
+    val md5Image: String,
 
     val position: Long,
-    override val artist: ArtistModel,
+    val artist: ArtistModel,
     val album: AlbumModel,
-    override val type: String
-): Track()
+    val type: String
+) : ApiTrack()

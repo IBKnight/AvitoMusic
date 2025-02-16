@@ -18,4 +18,10 @@ class SavedMusicRepository(private val dataSource: SavedMusicDatasource) : ISave
             )
         }
     }
+
+    override fun getTrack(id: Long, context: Context): SavedTracksModel {
+        val trackList = dataSource.getTracks(context)
+        return trackList[trackList.indexOfFirst { savedTrack -> savedTrack.id == id }]
+    }
+
 }

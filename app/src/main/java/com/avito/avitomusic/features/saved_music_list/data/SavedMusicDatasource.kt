@@ -35,7 +35,7 @@ class SavedMusicDatasource {
                         title = it.getString(titleColumn),
                         artist = it.getString(artistColumn),
                         duration = it.getLong(durationColumn),
-                        path = it.getString(dataColumn),
+                        preview = it.getString(dataColumn),
                         uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, it.getLong(idColumn)))
                 }
                 .toList()

@@ -1,8 +1,10 @@
 package com.avito.avitomusic.features.saved_music_list.ui.viewmodels
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avito.avitomusic.features.music_list.ui.MusicListState
@@ -24,6 +26,7 @@ class SavedMusicViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val tracks = repository.getTracks(context)
+                Log.i("loadSavedTracks", "$tracks")
                 _state.value = SavedMusicState.Loaded(tracks)
             } catch (e: Exception) {
                 _state.value = SavedMusicState.Error(e.message ?: "Unknown error")

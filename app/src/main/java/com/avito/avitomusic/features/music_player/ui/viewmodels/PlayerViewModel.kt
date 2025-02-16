@@ -7,9 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import android.media.MediaPlayer
-import android.util.Log
-import com.avito.avitomusic.MusicService
 import com.avito.avitomusic.common.data.model.ApiTrack
 import com.avito.avitomusic.features.music_player.domain.repository.IPlayerRepository
 import com.avito.avitomusic.MusicService.Companion.startService

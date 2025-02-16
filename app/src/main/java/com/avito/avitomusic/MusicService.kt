@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MusicService() : Service() {
+class MusicService : Service() {
 
     @Inject
     lateinit var notificationRepository: NotificationRepository
@@ -41,7 +41,7 @@ class MusicService() : Service() {
         super.onCreate()
         createNotificationChannel()
         initMediaSession()
-        observePlaybackState() // Начинаем наблюдать за состоянием воспроизведения
+        observePlaybackState()
     }
 
     override fun onDestroy() {
@@ -84,7 +84,7 @@ class MusicService() : Service() {
 
         serviceScope.launch {
             // Подписываемся на изменения currentTrack
-            notificationRepository.currentTrack.collect { track ->
+            notificationRepository.currentTrack.collect {
                 showMediaNotification(notificationRepository.isPlaying.value)
             }
         }

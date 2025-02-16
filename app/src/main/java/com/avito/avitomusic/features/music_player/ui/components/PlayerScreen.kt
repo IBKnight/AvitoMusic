@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -16,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.avito.avitomusic.R
 import com.avito.avitomusic.common.data.model.ApiTrack
+import com.avito.avitomusic.common.utils.formatTime
 import com.avito.avitomusic.features.music_list.data.models.TrackModel
 import com.avito.avitomusic.features.music_player.data.models.TrackListItemModel
 import com.avito.avitomusic.features.music_player.ui.viewmodels.PlayerViewModel
@@ -61,7 +63,7 @@ fun PlayerScreen(
         TrackImage(currentTrack)
 
         Text(
-            text = currentTrack?.title ?: "No track selected",
+            text = currentTrack?.title ?: stringResource(R.string.no_track_selected),
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 16.dp),
             fontSize = 24.sp,
@@ -139,11 +141,4 @@ fun TrackImage(currentTrack: ApiTrack?) {
         modifier = Modifier.size(350.dp)
     )
 
-}
-
-fun formatTime(seconds: Int): String {
-    val minutes = seconds / 60
-    val secs = seconds % 60
-    return String.format("%02d:%02d", minutes, secs)
-    TODO("перенести в utils")
 }

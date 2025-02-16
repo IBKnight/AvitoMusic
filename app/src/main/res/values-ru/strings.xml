@@ -7,4 +7,5 @@
     <string name="request_permission">Запросить разрешение</string>
     <string name="search_tracks">Искать треки</string>
     <string name="no_tracks_found">Треков не найдено</string>
+    <string name="no_track_selected">Не выбран трек</string>
 </resources>

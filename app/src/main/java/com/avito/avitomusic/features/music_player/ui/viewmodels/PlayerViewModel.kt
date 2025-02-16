@@ -1,15 +1,17 @@
 package com.avito.avitomusic.features.music_player.ui.viewmodels
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import android.media.MediaPlayer
-import android.util.Log
 import com.avito.avitomusic.common.data.model.ApiTrack
 import com.avito.avitomusic.features.music_player.domain.repository.IPlayerRepository
+import com.avito.avitomusic.MusicService.Companion.startService
+import com.avito.avitomusic.common.components.MediaPlayerSingleton.mediaPlayer
+import com.avito.avitomusic.features.music_player.data.repository.NotificationRepository
 import com.avito.avitomusic.features.saved_music_list.domain.repository.ISavedMusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -18,124 +20,74 @@ import javax.inject.Inject
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
     private val repository: IPlayerRepository,
-    private val savedRepository: ISavedMusicRepository
+    private val savedRepository: ISavedMusicRepository,
+    private val musicRepository: NotificationRepository,
+    private val application: Application
 ) : ViewModel() {
 
-    private val mediaPlayer = MediaPlayer()
+    val currentTrack: StateFlow<ApiTrack?> = musicRepository.currentTrack
+    val isPlaying: StateFlow<Boolean> = musicRepository.isPlaying
+    var progress: StateFlow<Float> = musicRepository.progress
+    val duration: StateFlow<Float> = musicRepository.duration
+    val isSeeking: StateFlow<Boolean> = musicRepository.isSeeking
 
-    // Список треков
     private val _tracks = MutableStateFlow<List<ApiTrack>>(emptyList())
     val tracks: StateFlow<List<ApiTrack>> = _tracks
 
-    // Текущий трек
-    private val _currentTrack = MutableStateFlow<ApiTrack?>(null)
-    val currentTrack: StateFlow<ApiTrack?> = _currentTrack
-
-    // Прогресс воспроизведения
-    private val _progress = MutableStateFlow(0f)
-    val progress: StateFlow<Float> = _progress
-
-    // Длительность трека
-    private val _duration = MutableStateFlow(0f)
-    val duration: StateFlow<Float> = _duration
-
-    // Состояние воспроизведения
-    private val _isPlaying = MutableStateFlow(false)
-    val isPlaying: StateFlow<Boolean> = _isPlaying
-
-    // Состояние перемотки
-    private val _isSeeking = MutableStateFlow(false)
-    val isSeeking: StateFlow<Boolean> = _isSeeking
-
     fun loadData(trackID: Long, artistID: Long, context: Context) {
         viewModelScope.launch {
-            var track: ApiTrack
-            if (artistID != -1L) {
+            val track = if (artistID != -1L) {
                 val trackListResponse = repository.getTrackList(artistID)
                 _tracks.value = trackListResponse.data
-
-                track = repository.getTrack(trackID)
+                repository.getTrack(trackID)
             } else {
-                track = savedRepository.getTrack(trackID, context)
-                _tracks.value = savedRepository.getTracks(context)
+                savedRepository.getTrack(trackID, context).also {
+                    _tracks.value = savedRepository.getTracks(context)
+                }
             }
-
-            _currentTrack.value = track
-            playTrack(track)
+            musicRepository.playTrack(track)
         }
-    }
-
-    private fun playTrack(track: ApiTrack) {
-        mediaPlayer.reset()
-        mediaPlayer.setDataSource(track.preview)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            _duration.value = mediaPlayer.duration.toFloat() / 1000
-            play()
-        }
+        startService(application, "PLAY")
         startProgressUpdates()
+
     }
 
     fun play() {
-        mediaPlayer.start()
-        _isPlaying.value = true
+        musicRepository.play()
+        startService(application, "PLAY")
     }
 
     fun pause() {
-        mediaPlayer.pause()
-        _isPlaying.value = false
+        musicRepository.pause()
+        startService(application, "PAUSE")
     }
 
-    // Перемотка
     fun seekTo(position: Float) {
-        _isSeeking.value = true
-        mediaPlayer.seekTo((position * 1000).toInt())
-        _progress.value = position
-        _isSeeking.value = false
+        musicRepository.seekTo(position)
     }
 
     fun nextTrack() {
-        var currentIndex = _tracks.value.indexOfFirst {
-            it.id == _currentTrack.value?.id
-        }
-        Log.i("nextTrack", "$currentIndex")
-
-        if (currentIndex != -1 && currentIndex < _tracks.value.size - 1) {
-            currentIndex += 1
-            _currentTrack.value = _tracks.value[currentIndex]
-            playTrack(_tracks.value[currentIndex])
-        } else {
-            currentIndex = 0
-            _currentTrack.value = _tracks.value[currentIndex]
-        }
-        Log.i("nextTrack", "$currentIndex")
+        musicRepository.nextTrack(_tracks.value)
+        startService(application, "SKIPNEXT")
     }
 
     fun previousTrack() {
-        var currentIndex = _tracks.value.indexOfFirst { it.id == _currentTrack.value?.id }
-        if (currentIndex > 0) {
-            currentIndex -= 1
-            _currentTrack.value = _tracks.value[currentIndex]
-            playTrack(_tracks.value[currentIndex])
-        }
-
-        Log.i("previousTrack", "$currentIndex")
-
+        musicRepository.previousTrack(_tracks.value)
+        startService(application, "SKIPPREVOUS")
     }
 
     private fun startProgressUpdates() {
         viewModelScope.launch {
             while (true) {
                 delay(1000L)
-                if (mediaPlayer.isPlaying && !_isSeeking.value) {
-                    _progress.value = mediaPlayer.currentPosition.toFloat() / 1000
+                if (mediaPlayer.isPlaying && !isSeeking.value) {
+                    musicRepository.setProgress(mediaPlayer.currentPosition.toFloat() / 1000)
                 }
             }
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        mediaPlayer.release()
-    }
 }
+
+
+

@@ -1,8 +1,8 @@
 package com.avito.avitomusic.features.music_player.data.repository
 
 import com.avito.avitomusic.common.data.ApiMusicDataSource
-import com.avito.avitomusic.features.music_list.domain.models.TrackModel
-import com.avito.avitomusic.features.music_player.domain.models.TrackListResponse
+import com.avito.avitomusic.features.music_list.data.models.TrackModel
+import com.avito.avitomusic.features.music_player.data.models.TrackListResponse
 import com.avito.avitomusic.features.music_player.domain.repository.IPlayerRepository
 import javax.inject.Inject
 

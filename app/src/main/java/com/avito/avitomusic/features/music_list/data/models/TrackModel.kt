@@ -1,4 +1,4 @@
-package com.avito.avitomusic.features.music_list.domain.models
+package com.avito.avitomusic.features.music_list.data.models
 
 import com.avito.avitomusic.common.data.model.ApiTrack
 import com.google.gson.annotations.SerializedName

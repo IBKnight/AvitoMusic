@@ -1,7 +1,7 @@
 package com.avito.avitomusic.features.music_player.domain.repository
 
-import com.avito.avitomusic.features.music_list.domain.models.TrackModel
-import com.avito.avitomusic.features.music_player.domain.models.TrackListResponse
+import com.avito.avitomusic.features.music_list.data.models.TrackModel
+import com.avito.avitomusic.features.music_player.data.models.TrackListResponse
 
 interface IPlayerRepository {
     suspend fun getTrackList(trackID: Long): TrackListResponse

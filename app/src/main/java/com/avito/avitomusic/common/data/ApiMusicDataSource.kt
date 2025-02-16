@@ -1,9 +1,9 @@
 package com.avito.avitomusic.common.data
 
-import com.avito.avitomusic.features.music_list.domain.models.TrackModel
-import com.avito.avitomusic.features.music_list.domain.models.Tracks
-import com.avito.avitomusic.features.music_list.domain.models.TracksResponse
-import com.avito.avitomusic.features.music_player.domain.models.TrackListResponse
+import com.avito.avitomusic.features.music_list.data.models.TrackModel
+import com.avito.avitomusic.features.music_list.data.models.Tracks
+import com.avito.avitomusic.features.music_list.data.models.TracksResponse
+import com.avito.avitomusic.features.music_player.data.models.TrackListResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

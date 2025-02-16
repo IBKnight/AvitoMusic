@@ -2,11 +2,6 @@ package com.avito.avitomusic.features.music_player.ui.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,10 +16,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.avito.avitomusic.R
 import com.avito.avitomusic.common.data.model.ApiTrack
-import com.avito.avitomusic.features.music_list.domain.models.TrackModel
-import com.avito.avitomusic.features.music_player.domain.models.TrackListItemModel
+import com.avito.avitomusic.features.music_list.data.models.TrackModel
+import com.avito.avitomusic.features.music_player.data.models.TrackListItemModel
 import com.avito.avitomusic.features.music_player.ui.viewmodels.PlayerViewModel
-import com.avito.avitomusic.features.saved_music_list.domain.models.SavedTracksModel
+import com.avito.avitomusic.features.saved_music_list.data.models.SavedTracksModel
 
 @SuppressLint("ResourceType")
 @Composable

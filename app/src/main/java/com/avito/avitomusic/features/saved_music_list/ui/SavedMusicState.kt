@@ -1,6 +1,6 @@
 package com.avito.avitomusic.features.saved_music_list.ui
 
-import com.avito.avitomusic.features.saved_music_list.domain.models.SavedTracksModel
+import com.avito.avitomusic.features.saved_music_list.data.models.SavedTracksModel
 
 sealed class SavedMusicState {
     data object Loading : SavedMusicState()

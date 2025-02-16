@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.avito.avitomusic.features.music_list.domain.models.TrackModel
+import com.avito.avitomusic.features.music_list.data.models.TrackModel
 
 @Composable
 fun MusicListItem(track: TrackModel, onClick: () -> Unit, modifier: Modifier = Modifier) {

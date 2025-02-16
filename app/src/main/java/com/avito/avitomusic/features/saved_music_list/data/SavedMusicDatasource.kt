@@ -3,7 +3,7 @@ package com.avito.avitomusic.features.saved_music_list.data
 import android.content.ContentUris
 import android.content.Context
 import android.provider.MediaStore
-import com.avito.avitomusic.features.saved_music_list.domain.models.SavedTracksModel
+import com.avito.avitomusic.features.saved_music_list.data.models.SavedTracksModel
 
 class SavedMusicDatasource {
     fun getTracks(context: Context): List<SavedTracksModel> {

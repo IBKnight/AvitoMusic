@@ -1,4 +1,4 @@
-package com.avito.avitomusic.features.music_player.domain.models
+package com.avito.avitomusic.features.music_player.data.models
 
 data class TrackListResponse (
     val data: List<TrackListItemModel>,

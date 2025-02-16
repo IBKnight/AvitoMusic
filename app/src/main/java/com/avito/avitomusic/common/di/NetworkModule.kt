@@ -1,8 +1,10 @@
 package com.avito.avitomusic.common.di
 
-import com.avito.avitomusic.features.music_list.data.ApiMusicDataSource
+import com.avito.avitomusic.common.data.ApiMusicDataSource
 import com.avito.avitomusic.features.music_list.data.ApiMusicListRepository
 import com.avito.avitomusic.features.music_list.domain.repository.IApiMusicListRepository
+import com.avito.avitomusic.features.music_player.data.repository.PlayerRepository
+import com.avito.avitomusic.features.music_player.domain.repository.IPlayerRepository
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -44,6 +46,12 @@ object NetworkModule {
     @Singleton
     fun provideApiMusicListRepository(apiMusicDataSource: ApiMusicDataSource): IApiMusicListRepository {
         return ApiMusicListRepository(apiMusicDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun providePlayerRepository(apiMusicDataSource: ApiMusicDataSource): IPlayerRepository {
+        return PlayerRepository(apiMusicDataSource)
     }
 
 }

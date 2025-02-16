@@ -6,4 +6,5 @@
     <string name="need_permission">Для доступа к музыке нужно разрешение</string>
     <string name="request_permission">Запросить разрешение</string>
     <string name="search_tracks">Искать треки</string>
+    <string name="no_tracks_found">Треков не найдено</string>
 </resources>

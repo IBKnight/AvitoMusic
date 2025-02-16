@@ -57,6 +57,7 @@ class PlayerViewModel @Inject constructor(
                 track = repository.getTrack(trackID)
             } else {
                 track = savedRepository.getTrack(trackID, context)
+                _tracks.value = savedRepository.getTracks(context)
             }
 
             _currentTrack.value = track

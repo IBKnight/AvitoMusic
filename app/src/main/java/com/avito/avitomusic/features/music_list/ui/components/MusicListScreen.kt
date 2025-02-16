@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.avito.avitomusic.common.components.Routes
 import com.avito.avitomusic.features.music_list.ui.MusicListState
 import com.avito.avitomusic.features.music_list.ui.viewmodel.ApiMusicListViewModel
 
@@ -30,7 +31,6 @@ fun MusicListScreen(
     navController: NavController,
     viewModel: ApiMusicListViewModel = hiltViewModel<ApiMusicListViewModel>()
 ) {
-    // Подписываемся на состояние из ViewModel
     val state by viewModel.state.collectAsState()
 
 
@@ -45,7 +45,7 @@ fun MusicListScreen(
             SearchBar(query, { newValue ->
                 query = newValue
             }, onSearch = {
-                if (query.isEmpty()) else viewModel.searchTracks(query)
+                if (query.isEmpty()) Unit else viewModel.searchTracks(query)
 
             })
             when (val currentState = state) {
@@ -63,6 +63,7 @@ fun MusicListScreen(
                     items((currentState).tracks) { track ->
                         MusicListItem(
                             track = track,
+                            { navController.navigate("${Routes.PLAYER.route}/${track.id}/${track.artist.id}") }
                         )
                     }
                 }

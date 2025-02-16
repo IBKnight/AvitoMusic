@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.avito.avitomusic.features.saved_music_list.domain.models.SavedTracksModel
+import com.avito.avitomusic.features.saved_music_list.data.models.SavedTracksModel
 
 @Composable
 fun SavedMusicListItem(
@@ -41,7 +41,7 @@ fun SavedMusicListItem(
                     .clip(RoundedCornerShape(8.dp))
             ) {
                 AsyncImage(
-                    model = track.uri, // Используем URI для загрузки изображения
+                    model = track.uri,
                     contentDescription = null,
                     modifier = Modifier.size(70.dp)
                 )

@@ -39,18 +39,18 @@ fun PlayerScreen(
     val progress by viewModel.progress.collectAsState()
     val duration by viewModel.duration.collectAsState()
     val isPlaying by viewModel.isPlaying.collectAsState()
-    val isSeeking by viewModel.isSeeking.collectAsState()
+//    val isSeeking by viewModel.isSeeking.collectAsState()
 
     // Локальное состояние для слайдера
     var sliderProgress by remember { mutableFloatStateOf(progress) }
 
     // Синхронизация слайдера с прогрессом
-    LaunchedEffect(progress) {
-        println(tracks)
-        if (!isSeeking) {
-            sliderProgress = progress
-        }
-    }
+//    LaunchedEffect(progress) {
+//        println(tracks)
+//        if (!isSeeking) {
+//            sliderProgress = progress
+//        }
+//    }
 
     Column(
         modifier = Modifier

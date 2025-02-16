@@ -1,5 +1,7 @@
 package com.avito.avitomusic.common.di
 
+import com.avito.avitomusic.features.music_player.data.repository.NotificationRepository
+import com.avito.avitomusic.features.music_player.data.repository.PlayerRepository
 import com.avito.avitomusic.features.saved_music_list.data.SavedMusicDatasource
 import com.avito.avitomusic.features.saved_music_list.data.SavedMusicRepository
 import com.avito.avitomusic.features.saved_music_list.domain.repository.ISavedMusicRepository
@@ -23,5 +25,11 @@ object LocalMusicModule {
     @Singleton
     fun provideSavedMusicRepository(savedMusicDatasource: SavedMusicDatasource): ISavedMusicRepository {
         return SavedMusicRepository(savedMusicDatasource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationRepository(playerRepository: PlayerRepository): NotificationRepository {
+        return NotificationRepository(playerRepository)
     }
 }

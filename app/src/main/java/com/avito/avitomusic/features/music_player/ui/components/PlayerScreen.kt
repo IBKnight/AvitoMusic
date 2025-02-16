@@ -1,6 +1,5 @@
 package com.avito.avitomusic.features.music_player.ui.components
 
-import android.R.mipmap.sym_def_app_icon
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -13,8 +12,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -23,6 +24,7 @@ import com.avito.avitomusic.common.data.model.ApiTrack
 import com.avito.avitomusic.features.music_list.domain.models.TrackModel
 import com.avito.avitomusic.features.music_player.domain.models.TrackListItemModel
 import com.avito.avitomusic.features.music_player.ui.viewmodels.PlayerViewModel
+import com.avito.avitomusic.features.saved_music_list.domain.models.SavedTracksModel
 
 @SuppressLint("ResourceType")
 @Composable
@@ -31,8 +33,10 @@ fun PlayerScreen(
     artistID: Long,
     viewModel: PlayerViewModel = hiltViewModel<PlayerViewModel>()
 ) {
+    val context = LocalContext.current
+
     LaunchedEffect(trackID, artistID) {
-        viewModel.loadData(trackID, artistID)
+        viewModel.loadData(trackID, artistID, context)
     }
 
     val tracks by viewModel.tracks.collectAsState()
@@ -57,22 +61,28 @@ fun PlayerScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-//        AsyncImage(
-//
-//            model = ContextCompat.getDrawable(LocalContext.current, R.drawable.avito_logo),
-//            //.artist?.picture,
-//            contentDescription = null,
-//            modifier = Modifier.size(400.dp),
-//
-//        )
+
         TrackImage(currentTrack)
 
         Text(
             text = currentTrack?.title ?: "No track selected",
             style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 16.dp),
+            fontSize = 24.sp,
+            textAlign = TextAlign.Start
+        )
+        Text(
+            text = when (val track = currentTrack) {
+                is SavedTracksModel? -> track?.artist ?: "<unknown>"
+                is TrackModel -> track.artist.name
+                is TrackListItemModel -> track.artist.name
+                else -> "No track selected"
+            },
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(bottom = 16.dp),
+            fontSize = 18.sp,
+            textAlign = TextAlign.Start
         )
 
         // Индикатор прогресса
@@ -104,16 +114,19 @@ fun PlayerScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = { viewModel.previousTrack() }) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Previous Track")
+                Icon(
+                    painterResource(id = R.drawable.skip_previous),
+                    contentDescription = "Previous Track"
+                )
             }
             IconButton(onClick = { if (isPlaying) viewModel.pause() else viewModel.play() }) {
                 Icon(
-                    if (isPlaying) Icons.Default.MoreVert else Icons.Default.PlayArrow,
+                    if (isPlaying) painterResource(id = R.drawable.pause) else painterResource(id = R.drawable.play_arrow),
                     contentDescription = if (isPlaying) "Pause" else "Play"
                 )
             }
             IconButton(onClick = { viewModel.nextTrack() }) {
-                Icon(Icons.Default.ArrowForward, contentDescription = "Next Track")
+                Icon(painterResource(id = R.drawable.skip_next), contentDescription = "Next Track")
             }
         }
     }
@@ -128,8 +141,9 @@ fun TrackImage(currentTrack: ApiTrack?) {
             else -> ContextCompat.getDrawable(LocalContext.current, R.drawable.avito_logo)
         },
         contentDescription = null,
-        modifier = Modifier.size(400.dp)
+        modifier = Modifier.size(350.dp)
     )
+
 }
 
 fun formatTime(seconds: Int): String {

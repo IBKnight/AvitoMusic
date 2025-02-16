@@ -41,7 +41,7 @@ fun SavedMusicListItem(
                     .clip(RoundedCornerShape(8.dp))
             ) {
                 AsyncImage(
-                    model = track.uri, // Используем URI для загрузки изображения
+                    model = track.uri,
                     contentDescription = null,
                     modifier = Modifier.size(70.dp)
                 )

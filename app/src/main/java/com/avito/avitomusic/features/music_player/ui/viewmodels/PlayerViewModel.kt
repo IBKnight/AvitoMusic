@@ -1,5 +1,6 @@
 package com.avito.avitomusic.features.music_player.ui.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
     private val repository: IPlayerRepository,
+    private val savedRepository: ISavedMusicRepository
 ) : ViewModel() {
 
     private val mediaPlayer = MediaPlayer()
@@ -45,12 +47,18 @@ class PlayerViewModel @Inject constructor(
     private val _isSeeking = MutableStateFlow(false)
     val isSeeking: StateFlow<Boolean> = _isSeeking
 
-    fun loadData(trackID: Long, artistID: Long) {
+    fun loadData(trackID: Long, artistID: Long, context: Context) {
         viewModelScope.launch {
-            val trackListResponse = repository.getTrackList(artistID)
-            _tracks.value = trackListResponse.data
+            var track: ApiTrack
+            if (artistID != -1L) {
+                val trackListResponse = repository.getTrackList(artistID)
+                _tracks.value = trackListResponse.data
 
-            val track = repository.getTrack(trackID)
+                track = repository.getTrack(trackID)
+            } else {
+                track = savedRepository.getTrack(trackID, context)
+            }
+
             _currentTrack.value = track
             playTrack(track)
         }

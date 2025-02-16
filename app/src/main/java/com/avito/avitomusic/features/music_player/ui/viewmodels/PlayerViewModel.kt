@@ -32,6 +32,7 @@ class PlayerViewModel @Inject constructor(
     val isPlaying: StateFlow<Boolean> = musicRepository.isPlaying
     var progress: StateFlow<Float> = musicRepository.progress
     val duration: StateFlow<Float> = musicRepository.duration
+    val isSeeking: StateFlow<Boolean> = musicRepository.isSeeking
 
     private val _tracks = MutableStateFlow<List<ApiTrack>>(emptyList())
     val tracks: StateFlow<List<ApiTrack>> = _tracks
@@ -49,6 +50,9 @@ class PlayerViewModel @Inject constructor(
             }
             musicRepository.playTrack(track)
         }
+        startService(application, "PLAY")
+        startProgressUpdates()
+
     }
 
     fun play() {
@@ -75,16 +79,16 @@ class PlayerViewModel @Inject constructor(
         startService(application, "SKIPPREVOUS")
     }
 
-//    private fun startProgressUpdates() {
-//        viewModelScope.launch {
-//            while (true) {
-//                delay(1000L)
-//                if (isPlaying.value) {
-//                    progress.value = mediaPlayer.currentPosition.toFloat() / 1000
-//                }
-//            }
-//        }
-//    }
+    private fun startProgressUpdates() {
+        viewModelScope.launch {
+            while (true) {
+                delay(1000L)
+                if (mediaPlayer.isPlaying && !isSeeking.value) {
+                    musicRepository.setProgress(mediaPlayer.currentPosition.toFloat() / 1000)
+                }
+            }
+        }
+    }
 
 }
 

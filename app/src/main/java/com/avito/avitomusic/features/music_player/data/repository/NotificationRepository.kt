@@ -19,6 +19,9 @@ class NotificationRepository @Inject constructor(val playerRepository: PlayerRep
     private val _isPlaying = MutableStateFlow(false)
     val isPlaying: StateFlow<Boolean> = _isPlaying
 
+    private val _isSeeking = MutableStateFlow(false)
+    val isSeeking: StateFlow<Boolean> = _isSeeking
+
     // Прогресс воспроизведения
     private val _progress = MutableStateFlow(0f)
     val progress: StateFlow<Float> = _progress
@@ -26,6 +29,10 @@ class NotificationRepository @Inject constructor(val playerRepository: PlayerRep
     // Длительность трека
     private val _duration = MutableStateFlow(0f)
     val duration: StateFlow<Float> = _duration
+
+    fun setProgress(value: Float) {
+        _progress.value = value
+    }
 
     fun playTrack(track: ApiTrack) {
         mediaPlayer.reset()
@@ -49,8 +56,10 @@ class NotificationRepository @Inject constructor(val playerRepository: PlayerRep
     }
 
     fun seekTo(position: Float) {
+        _isSeeking.value = true
         mediaPlayer.seekTo((position * 1000).toInt())
         _progress.value = position
+        _isSeeking.value = false
     }
 
     fun nextTrack(tracks: List<ApiTrack>) {
@@ -69,15 +78,5 @@ class NotificationRepository @Inject constructor(val playerRepository: PlayerRep
         }
     }
 
-//    fun startProgressUpdates() {
-//        // Запускаем обновление прогресса в корутине
-//        coroutineScope(Dispatchers.Main)launch {
-//            while (true) {
-//                delay(1000) // Обновляем каждую секунду
-//                if (mediaPlayer.isPlaying) {
-//                    _progress.value = mediaPlayer.currentPosition.toFloat() / 1000
-//                }
-//            }
-//        }
-//    }
+
 }

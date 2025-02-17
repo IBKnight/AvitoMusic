@@ -36,11 +36,13 @@ https://developers.deezer.com
 
 ### Скриншоты
 
-<img src="images/api_list.png" alt="api_list" width="150" height="350">
-<img src="images/saved_music_list.png" alt="api_list" width="150" height="350">
-<img src="images/player.png" alt="api_list" width="150" height="350">
-<img src="images/playback_notification.png" alt="api_list" width="150" height="350">
+<div style="display: flex;">
+  <img src="images/api_list.png" alt="api_list" width="150" height="350" style="margin-right: 10px;">
+  <img src="images/saved_music_list.png" alt="saved_music_list" width="150" height="350" style="margin-right: 10px;">
+  <img src="images/player.png" alt="player" width="150" height="350" style="margin-right: 10px;">
+  <img src="images/playback_notification.png" alt="playback_notification" width="150" height="350">
+</div>
 
 ---
 
-### upd: Изменение README.md согласовано с командой стажировок
+### upd: Изменение README согласовано с командой стажировок

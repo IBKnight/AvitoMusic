@@ -25,11 +25,15 @@ import androidx.navigation.NavController
 import com.avito.avitomusic.common.components.Routes
 import com.avito.avitomusic.features.music_list.ui.MusicListState
 import com.avito.avitomusic.features.music_list.ui.viewmodel.ApiMusicListViewModel
+import com.avito.avitomusic.features.saved_music.data.model.SavedTrackModel
+import com.avito.avitomusic.features.saved_music.ui.SavedMusicViewModel
+import kotlinx.coroutines.flow.toList
 
 @Composable
 fun MusicListScreen(
     navController: NavController,
-    viewModel: ApiMusicListViewModel = hiltViewModel<ApiMusicListViewModel>()
+    viewModel: ApiMusicListViewModel = hiltViewModel<ApiMusicListViewModel>(),
+    savedViewModel: SavedMusicViewModel = hiltViewModel<SavedMusicViewModel>()
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -61,9 +65,26 @@ fun MusicListScreen(
                     contentPadding = PaddingValues(16.dp)
                 ) {
                     items((currentState).tracks) { track ->
+                        val trackForSave = SavedTrackModel(
+                            id = track.id,
+                            title = track.title,
+                            artist = track.artist.name,
+                            artistId = track.artist.id,
+                            duration = track.duration,
+                            preview = track.preview,
+                        )
+
+                        val isSaved by savedViewModel.isTrackSavedState(track.id).collectAsState()
+
                         MusicListItem(
                             track = track,
-                            { navController.navigate("${Routes.PLAYER.route}/${track.id}/${track.artist.id}") }
+                            onClick = { navController.navigate("${Routes.PLAYER.route}/${track.id}/${track.artist.id}") },
+                            isSaved = isSaved,
+                            onToggleSaved = {
+                                savedViewModel.toggleSaved(
+                                    trackForSave
+                                )
+                            }
                         )
                     }
                 }
@@ -74,5 +95,6 @@ fun MusicListScreen(
 
 
     }
+
 
 }

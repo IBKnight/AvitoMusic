@@ -1,4 +1,4 @@
-package com.avito.avitomusic.features.saved_music_list.ui.components
+package com.avito.avitomusic.features.device_music_list.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,11 +16,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.avito.avitomusic.features.saved_music_list.data.models.SavedTracksModel
+import com.avito.avitomusic.features.device_music_list.data.models.DeviceTracksModel
 
 @Composable
-fun SavedMusicListItem(
-    track: SavedTracksModel,
+fun DeviceMusicListItem(
+    track: DeviceTracksModel,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {

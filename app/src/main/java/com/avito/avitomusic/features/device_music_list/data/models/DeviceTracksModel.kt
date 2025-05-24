@@ -1,9 +1,9 @@
-package com.avito.avitomusic.features.saved_music_list.data.models
+package com.avito.avitomusic.features.device_music_list.data.models
 
 import android.net.Uri
 import com.avito.avitomusic.common.data.model.ApiTrack
 
-data class SavedTracksModel(
+data class DeviceTracksModel(
     override val id: Long,
     override val title: String,
     val artist: String,

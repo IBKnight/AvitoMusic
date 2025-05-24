@@ -26,7 +26,7 @@ import com.avito.avitomusic.common.utils.formatTime
 import com.avito.avitomusic.features.music_list.data.models.TrackModel
 import com.avito.avitomusic.features.music_player.data.models.TrackListItemModel
 import com.avito.avitomusic.features.music_player.ui.viewmodels.PlayerViewModel
-import com.avito.avitomusic.features.saved_music_list.data.models.SavedTracksModel
+import com.avito.avitomusic.features.device_music_list.data.models.DeviceTracksModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("ResourceType")
@@ -92,7 +92,7 @@ fun PlayerScreen(
         )
         Text(
             text = when (val track = currentTrack) {
-                is SavedTracksModel? -> track?.artist ?: "<unknown>"
+                is DeviceTracksModel? -> track?.artist ?: "<unknown>"
                 is TrackModel -> track.artist.name
                 is TrackListItemModel -> track.artist.name
                 else -> stringResource(R.string.no_track_selected)
@@ -156,7 +156,7 @@ fun TrackImage(currentTrack: ApiTrack?) {
         model = when (currentTrack) {
             is TrackModel -> currentTrack.artist.picture
             is TrackListItemModel -> currentTrack.artist.picture
-            else -> ContextCompat.getDrawable(LocalContext.current, R.drawable.avito_logo)
+            else -> ContextCompat.getDrawable(LocalContext.current, R.drawable.stab)
         },
         contentDescription = null,
         modifier = Modifier.size(350.dp)

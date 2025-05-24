@@ -2,10 +2,14 @@ package com.avito.avitomusic.features.music_player.ui.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -14,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.avito.avitomusic.R
 import com.avito.avitomusic.common.data.model.ApiTrack
@@ -23,11 +28,13 @@ import com.avito.avitomusic.features.music_player.data.models.TrackListItemModel
 import com.avito.avitomusic.features.music_player.ui.viewmodels.PlayerViewModel
 import com.avito.avitomusic.features.saved_music_list.data.models.SavedTracksModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("ResourceType")
 @Composable
 fun PlayerScreen(
     trackID: Long,
     artistID: Long,
+    navController: NavController,
     viewModel: PlayerViewModel = hiltViewModel<PlayerViewModel>()
 ) {
     val context = LocalContext.current
@@ -60,7 +67,21 @@ fun PlayerScreen(
             .padding(16.dp),
     ) {
 
-        TrackImage(currentTrack)
+        IconButton(onClick = { navController.navigateUp() }) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "Back"
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(8.dp))
+        ) {
+            TrackImage(currentTrack)
+
+        }
+
 
         Text(
             text = currentTrack?.title ?: stringResource(R.string.no_track_selected),
@@ -74,7 +95,7 @@ fun PlayerScreen(
                 is SavedTracksModel? -> track?.artist ?: "<unknown>"
                 is TrackModel -> track.artist.name
                 is TrackListItemModel -> track.artist.name
-                else -> "No track selected"
+                else -> stringResource(R.string.no_track_selected)
             },
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 16.dp),

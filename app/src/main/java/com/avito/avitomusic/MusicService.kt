@@ -199,15 +199,14 @@ class MusicService : Service() {
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
                     .setShowActionsInCompactView(0, 1)
-            )
+            ).addAction(R.drawable.skip_previous, "Skip Previous", skipPreviousIntent)
             .addAction(
                 if (isPlaying) R.drawable.pause else R.drawable.play_arrow,
                 if (isPlaying) "Pause" else "Play",
                 if (isPlaying) pauseIntent else playIntent
             )
-            .addAction(androidx.media3.session.R.drawable.media3_icon_stop, "Stop", stopIntent)
             .addAction(R.drawable.skip_next, "Skip Next", skipNextIntent)
-            .addAction(R.drawable.skip_previous, "Skip Previous", skipPreviousIntent)
+            .addAction(androidx.media3.session.R.drawable.media3_icon_stop, "Stop", stopIntent)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .build()
     }

@@ -62,6 +62,7 @@ class MainActivity : ComponentActivity() {
                             PlayerScreen(
                                 trackID = trackID,
                                 artistID = artistID,
+                                navController = controller
                             )
                         }
                     }

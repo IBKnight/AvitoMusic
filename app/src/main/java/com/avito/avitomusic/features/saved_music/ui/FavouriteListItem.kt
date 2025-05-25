@@ -1,5 +1,6 @@
-package com.avito.avitomusic.features.music_list.ui.components
+package com.avito.avitomusic.features.saved_music.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,14 +9,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,17 +24,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.avito.avitomusic.features.music_list.data.models.TrackModel
+import com.avito.avitomusic.features.saved_music.data.model.FavouriteTrackModel
 
 @Composable
-fun MusicListItem(
-    track: TrackModel, onClick: () -> Unit, modifier: Modifier = Modifier, isSaved: Boolean,
-    onToggleSaved: () -> Unit
+fun FavouriteListItem(
+    track: FavouriteTrackModel, onClick: () -> Unit, modifier: Modifier = Modifier
 ) {
     Box(
         modifier = Modifier
+            .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
             .height(70.dp)
             .fillMaxSize()
+
             .clickable {
                 onClick()
             }
@@ -47,12 +45,12 @@ fun MusicListItem(
                 Modifier
                     .fillMaxHeight()
                     .width(70.dp)
-
                     .clip(RoundedCornerShape(8.dp))
+                    .background(Color.LightGray)
             )
             {
                 AsyncImage(
-                    track.artist.picture,
+                    track.trackImage,
                     contentDescription = null,
                     modifier = Modifier.size(70.dp)
                 )
@@ -70,32 +68,17 @@ fun MusicListItem(
                 )
                 Spacer(modifier.height(1.dp))
                 Text(
-                    track.artist.name,
+                    track.artist,
                     color = MaterialTheme.colorScheme.secondary,
                     fontSize = 14.sp
                 )
+
+
             }
 
-            IconButton(onClick = { onToggleSaved() }) {
-                val icon = if (isSaved) Icons.Filled.Favorite else Icons.Default.FavoriteBorder
-                val tint = if (isSaved) Color.Red else Color.Black
-                Icon(
-                    imageVector = icon,
-                    contentDescription = if (isSaved) "Unsave" else "Save",
-                    tint = tint
-                )
-            }
 
         }
     }
 
 
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    AvitoMusicTheme {
-//        MusicListItem(track)
-//    }
-//}

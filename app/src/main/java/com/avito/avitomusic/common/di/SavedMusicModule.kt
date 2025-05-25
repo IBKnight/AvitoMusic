@@ -1,7 +1,7 @@
 package com.avito.avitomusic.common.di
 
-import com.avito.avitomusic.features.saved_music.data.repository.SavedMusicRepoImpl
-import com.avito.avitomusic.features.saved_music.domain.repository.ISavedMusicRepo
+import com.avito.avitomusic.features.saved_music.data.repository.FavouriteMusicRepoImpl
+import com.avito.avitomusic.features.saved_music.domain.repository.IFavouriteMusicRepo
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -12,6 +12,6 @@ import dagger.hilt.components.SingletonComponent
 abstract class SavedMusicModule {
     @Binds
     abstract fun bindSavedMusicRepo(
-        impl: SavedMusicRepoImpl
-    ): ISavedMusicRepo
+        impl: FavouriteMusicRepoImpl
+    ): IFavouriteMusicRepo
 }

@@ -2,6 +2,7 @@ package com.avito.avitomusic.common.components
 
 import android.graphics.drawable.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -27,7 +28,7 @@ fun BottomNavigationBar(navController: NavController) {
             Icons.Default.Search
         ),
         BottomNavItem(Routes.DEVICE.localizedRouteName(), Routes.DEVICE.route, ImageVector.vectorResource(id = R.drawable.device)),
-        BottomNavItem(Routes.SAVED.localizedRouteName(), Routes.SAVED.route, ImageVector.vectorResource(id = R.drawable.saved)),
+        BottomNavItem(Routes.SAVED.localizedRouteName(), Routes.SAVED.route, Icons.Filled.Favorite),
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()

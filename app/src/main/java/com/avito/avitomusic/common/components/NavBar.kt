@@ -5,6 +5,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -28,7 +30,7 @@ fun BottomNavigationBar(navController: NavController) {
             Icons.Default.Search
         ),
         BottomNavItem(Routes.DEVICE.localizedRouteName(), Routes.DEVICE.route, ImageVector.vectorResource(id = R.drawable.device)),
-        BottomNavItem(Routes.SAVED.localizedRouteName(), Routes.SAVED.route, Icons.Filled.Favorite),
+        BottomNavItem(Routes.SAVED.localizedRouteName(), Routes.SAVED.route, Icons.Outlined.FavoriteBorder),
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()

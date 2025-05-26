@@ -8,7 +8,8 @@ data class DeviceTracksModel(
     override val title: String,
     val artist: String,
     override val duration: Long,
-    //Путь до трека
     override val preview: String,
     val uri: Uri,
 ): ApiTrack()
+
+

@@ -1,9 +1,6 @@
 package com.avito.avitomusic.features.saved_music.data.repository
 
 
-import com.avito.avitomusic.common.data.model.ApiTrack
-import com.avito.avitomusic.features.music_list.data.models.TrackModel
-import com.avito.avitomusic.features.music_player.data.models.TrackListItemModel
 import com.avito.avitomusic.features.saved_music.data.FavouriteTrackDao
 import com.avito.avitomusic.features.saved_music.data.model.FavouriteTrackModel
 import com.avito.avitomusic.features.saved_music.domain.repository.IFavouriteMusicRepo
@@ -14,7 +11,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
-class FavouriteMusicRepoImpl @Inject constructor(
+class FavouriteTrackRepoImpl @Inject constructor(
     private val dao: FavouriteTrackDao
 ) : IFavouriteMusicRepo {
     override suspend fun getSavedTracks(): Flow<List<FavouriteTrackModel>> =

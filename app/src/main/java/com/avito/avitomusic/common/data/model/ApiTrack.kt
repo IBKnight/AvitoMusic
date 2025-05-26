@@ -6,3 +6,4 @@ abstract class ApiTrack {
     abstract val duration: Long
     abstract val preview: String
 }
+

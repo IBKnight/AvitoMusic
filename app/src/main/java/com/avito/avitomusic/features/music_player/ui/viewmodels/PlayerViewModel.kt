@@ -14,7 +14,10 @@ import com.avito.avitomusic.common.components.MediaPlayerSingleton.mediaPlayer
 import com.avito.avitomusic.features.music_player.data.repository.NotificationRepository
 import com.avito.avitomusic.features.device_music_list.domain.repository.IDeviceMusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +27,7 @@ class PlayerViewModel @Inject constructor(
     private val musicRepository: NotificationRepository,
     private val application: Application
 ) : ViewModel() {
+    private var progressJob: Job? = null
 
     val currentTrack: StateFlow<ApiTrack?> = musicRepository.currentTrack
     val isPlaying: StateFlow<Boolean> = musicRepository.isPlaying
@@ -32,7 +36,7 @@ class PlayerViewModel @Inject constructor(
     val isSeeking: StateFlow<Boolean> = musicRepository.isSeeking
 
     private val _tracks = MutableStateFlow<List<ApiTrack>>(emptyList())
-    val tracks: StateFlow<List<ApiTrack>> = _tracks
+    val tracks: StateFlow<List<ApiTrack>> = _tracks.asStateFlow()
 
     fun loadData(trackID: Long, artistID: Long, context: Context) {
         viewModelScope.launch {
@@ -67,24 +71,35 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun nextTrack() {
-        musicRepository.nextTrack(_tracks.value)
+        musicRepository.nextTrack(tracks.value)
         startService(application, "SKIPNEXT")
     }
 
     fun previousTrack() {
-        musicRepository.previousTrack(_tracks.value)
+        musicRepository.previousTrack(tracks.value)
         startService(application, "SKIPPREVOUS")
     }
 
     private fun startProgressUpdates() {
-        viewModelScope.launch {
-            while (true) {
-                delay(1000L)
-                if (mediaPlayer.isPlaying && !isSeeking.value) {
-                    musicRepository.setProgress(mediaPlayer.currentPosition.toFloat() / 1000)
+        progressJob?.cancel()
+        progressJob = viewModelScope.launch {
+            combine(isPlaying, isSeeking) { playing, seeking ->
+                playing && !seeking
+            }.collect { shouldUpdate ->
+                if (shouldUpdate) {
+                    while (isPlaying.value && !isSeeking.value) {
+                        musicRepository.setProgress(mediaPlayer.currentPosition.toFloat() / 1000)
+                        delay(100)
+                    }
                 }
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        progressJob?.cancel()
+        progressJob = null
     }
 
 }

@@ -1,12 +1,12 @@
-package com.avito.avitomusic.features.saved_music_list.data
+package com.avito.avitomusic.features.device_music_list.data
 
 import android.content.ContentUris
 import android.content.Context
 import android.provider.MediaStore
-import com.avito.avitomusic.features.saved_music_list.data.models.SavedTracksModel
+import com.avito.avitomusic.features.device_music_list.data.models.DeviceTracksModel
 
-class SavedMusicDatasource {
-    fun getTracks(context: Context): List<SavedTracksModel> {
+class DeviceMusicDatasource {
+    fun getTracks(context: Context): List<DeviceTracksModel> {
         val projection = arrayOf(
             MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.TITLE,
@@ -30,7 +30,7 @@ class SavedMusicDatasource {
 
             generateSequence { if (cursor.moveToNext()) cursor else null }
                 .map {
-                    SavedTracksModel(
+                    DeviceTracksModel(
                         id = it.getLong(idColumn),
                         title = it.getString(titleColumn),
                         artist = it.getString(artistColumn),

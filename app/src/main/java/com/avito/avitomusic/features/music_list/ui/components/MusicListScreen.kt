@@ -25,11 +25,14 @@ import androidx.navigation.NavController
 import com.avito.avitomusic.common.components.Routes
 import com.avito.avitomusic.features.music_list.ui.MusicListState
 import com.avito.avitomusic.features.music_list.ui.viewmodel.ApiMusicListViewModel
+import com.avito.avitomusic.features.saved_music.data.model.FavouriteTrackModel
+import com.avito.avitomusic.features.saved_music.ui.FavouriteMusicViewModel
 
 @Composable
 fun MusicListScreen(
     navController: NavController,
-    viewModel: ApiMusicListViewModel = hiltViewModel<ApiMusicListViewModel>()
+    viewModel: ApiMusicListViewModel = hiltViewModel<ApiMusicListViewModel>(),
+    savedViewModel: FavouriteMusicViewModel = hiltViewModel<FavouriteMusicViewModel>()
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -44,9 +47,11 @@ fun MusicListScreen(
         Column {
             SearchBar(query, { newValue ->
                 query = newValue
-            }, onSearch = {
-                if (query.isEmpty()) Unit else viewModel.searchTracks(query)
+                viewModel.searchTracks(query)
 
+            }, {
+                query = ""
+                viewModel.searchTracks(query)
             })
             when (val currentState = state) {
                 is MusicListState.Loading -> Box(
@@ -61,9 +66,27 @@ fun MusicListScreen(
                     contentPadding = PaddingValues(16.dp)
                 ) {
                     items((currentState).tracks) { track ->
+                        val trackForSave = FavouriteTrackModel(
+                            id = track.id,
+                            title = track.title,
+                            artist = track.artist.name,
+                            artistId = track.artist.id,
+                            duration = track.duration,
+                            trackImage = track.artist.pictureSmall,
+                            preview = track.preview,
+                        )
+
+                        val isSaved by savedViewModel.isTrackSavedState(track.id).collectAsState()
+
                         MusicListItem(
                             track = track,
-                            { navController.navigate("${Routes.PLAYER.route}/${track.id}/${track.artist.id}") }
+                            onClick = { navController.navigate("${Routes.PLAYER.route}/${track.id}/${track.artist.id}") },
+                            isSaved = isSaved,
+                            onToggleSaved = {
+                                savedViewModel.toggleSaved(
+                                    trackForSave
+                                )
+                            }
                         )
                     }
                 }
@@ -74,5 +97,6 @@ fun MusicListScreen(
 
 
     }
+
 
 }

@@ -1,4 +1,4 @@
-package com.avito.avitomusic.features.saved_music_list.ui.components
+package com.avito.avitomusic.features.device_music_list.ui.components
 
 import android.content.Context
 import android.os.Build
@@ -19,16 +19,16 @@ import androidx.navigation.NavController
 import com.avito.avitomusic.R
 import com.avito.avitomusic.common.components.Routes
 import com.avito.avitomusic.features.music_list.ui.components.SearchBar
-import com.avito.avitomusic.features.saved_music_list.ui.SavedMusicState
-import com.avito.avitomusic.features.saved_music_list.ui.viewmodels.SavedMusicViewModel
+import com.avito.avitomusic.features.device_music_list.ui.DeviceMusicState
+import com.avito.avitomusic.features.device_music_list.ui.viewmodels.DeviceMusicViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun SavedMusicScreen(
-    viewModel: SavedMusicViewModel = hiltViewModel(),
+fun DeviceMusicScreen(
+    viewModel: DeviceMusicViewModel = hiltViewModel(),
     context: Context,
     navController: NavController
 ) {
@@ -55,7 +55,7 @@ fun SavedMusicScreen(
         }
 
         when (val currentState = state) {
-            is SavedMusicState.Loading -> {
+            is DeviceMusicState.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -64,7 +64,7 @@ fun SavedMusicScreen(
                 }
             }
 
-            is SavedMusicState.Loaded -> {
+            is DeviceMusicState.Loaded -> {
                 var searchQuery by remember { mutableStateOf("") }
 
                 Column {
@@ -78,25 +78,33 @@ fun SavedMusicScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        contentPadding = PaddingValues(16.dp)
-                    ) {
-                        items(currentState.tracks) { track ->
-                            SavedMusicListItem(
-                                track = track,
-                                onClick = {
-                                    navController.navigate("${Routes.PLAYER.route}/${track.id}/${-1}")
-                                }
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
+                    if (currentState.tracks.isEmpty())
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = stringResource(id = R.string.no_tracks_found))
                         }
-                    }
+                    else
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            contentPadding = PaddingValues(16.dp)
+                        ) {
+                            items(currentState.tracks) { track ->
+                                DeviceMusicListItem(
+                                    track = track,
+                                    onClick = {
+                                        navController.navigate("${Routes.PLAYER.route}/${track.id}/${-1}")
+                                    }
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+                        }
                 }
             }
 
-            is SavedMusicState.Error -> {
+            is DeviceMusicState.Error -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center

@@ -18,7 +18,7 @@ import androidx.core.app.NotificationCompat
 import com.avito.avitomusic.features.music_list.data.models.TrackModel
 import com.avito.avitomusic.features.music_player.data.models.TrackListItemModel
 import com.avito.avitomusic.features.music_player.data.repository.NotificationRepository
-import com.avito.avitomusic.features.saved_music_list.data.models.SavedTracksModel
+import com.avito.avitomusic.features.device_music_list.data.models.DeviceTracksModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -130,7 +130,7 @@ class MusicService : Service() {
                 try {
 
                     val id = when (currentTrack) {
-                        is SavedTracksModel? -> currentTrack.id
+                        is DeviceTracksModel? -> currentTrack.id
                         is TrackModel -> currentTrack.artist.id
                         is TrackListItemModel -> currentTrack.artist.id
                         else -> -1L
@@ -199,22 +199,21 @@ class MusicService : Service() {
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
                     .setShowActionsInCompactView(0, 1)
-            )
+            ).addAction(R.drawable.skip_previous, "Skip Previous", skipPreviousIntent)
             .addAction(
                 if (isPlaying) R.drawable.pause else R.drawable.play_arrow,
                 if (isPlaying) "Pause" else "Play",
                 if (isPlaying) pauseIntent else playIntent
             )
-            .addAction(androidx.media3.session.R.drawable.media3_icon_stop, "Stop", stopIntent)
             .addAction(R.drawable.skip_next, "Skip Next", skipNextIntent)
-            .addAction(R.drawable.skip_previous, "Skip Previous", skipPreviousIntent)
+            .addAction(androidx.media3.session.R.drawable.media3_icon_stop, "Stop", stopIntent)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .build()
     }
 
     private fun getAlbumArt(): Bitmap? {
         // Загрузите обложку альбома (например, из сети или ресурсов)
-        return BitmapFactory.decodeResource(resources, R.drawable.avito_logo)
+        return BitmapFactory.decodeResource(resources, R.drawable.stab)
     }
 
     private fun createNotificationChannel() {

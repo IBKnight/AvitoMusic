@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name">AvitoMusic</string>
+    <string name="app_name">Music App</string>
     <string name="search">Search</string>
-    <string name="saved">Saved</string>
+    <string name="saved">Favourite</string>
     <string name="need_permission">You need permission to access the music.</string>
     <string name="request_permission">Request permission</string>
-    <string name="search_tracks">Search tracks...</string>
+    <string name="search_tracks">Search tracks…</string>
     <string name="no_tracks_found">No tracks found</string>
     <string name="no_track_selected">No track selected</string>
+    <string name="device">Device</string>
 </resources>

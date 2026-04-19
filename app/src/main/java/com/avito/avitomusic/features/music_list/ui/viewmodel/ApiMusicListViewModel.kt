@@ -39,8 +39,13 @@ class ApiMusicListViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = MusicListState.Loading
             try {
-                val tracks = repository.search(query)
-                _state.value = MusicListState.Loaded(tracks)
+                if (query.isNotEmpty()) {
+                    val tracks = repository.search(query)
+                    _state.value = MusicListState.Loaded(tracks)
+                } else {
+                    val tracks = repository.getList()
+                    _state.value = MusicListState.Loaded(tracks)
+                }
             } catch (e: Exception) {
                 _state.value = MusicListState.Error("Ошибка поиска: ${e.message}")
             }

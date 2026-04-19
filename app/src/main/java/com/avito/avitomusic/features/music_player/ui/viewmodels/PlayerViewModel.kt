@@ -12,7 +12,7 @@ import com.avito.avitomusic.features.music_player.domain.repository.IPlayerRepos
 import com.avito.avitomusic.MusicService.Companion.startService
 import com.avito.avitomusic.common.components.MediaPlayerSingleton.mediaPlayer
 import com.avito.avitomusic.features.music_player.data.repository.NotificationRepository
-import com.avito.avitomusic.features.saved_music_list.domain.repository.ISavedMusicRepository
+import com.avito.avitomusic.features.device_music_list.domain.repository.IDeviceMusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
     private val repository: IPlayerRepository,
-    private val savedRepository: ISavedMusicRepository,
+    private val savedRepository: IDeviceMusicRepository,
     private val musicRepository: NotificationRepository,
     private val application: Application
 ) : ViewModel() {

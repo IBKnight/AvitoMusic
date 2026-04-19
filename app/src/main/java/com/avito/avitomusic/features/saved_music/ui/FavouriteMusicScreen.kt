@@ -19,7 +19,7 @@ import com.avito.avitomusic.features.music_list.ui.components.SearchBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun SavedMusicScreen(
+fun FavouriteMusicScreen(
     navController: NavController,
     viewModel: FavouriteMusicViewModel = hiltViewModel<FavouriteMusicViewModel>(),
 ) {

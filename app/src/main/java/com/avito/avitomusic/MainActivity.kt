@@ -17,7 +17,7 @@ import com.avito.avitomusic.common.components.Routes
 import com.avito.avitomusic.features.music_list.ui.components.MusicListScreen
 import com.avito.avitomusic.features.music_player.ui.components.PlayerScreen
 import com.avito.avitomusic.features.device_music_list.ui.components.DeviceMusicScreen
-import com.avito.avitomusic.features.saved_music.ui.SavedMusicScreen
+import com.avito.avitomusic.features.saved_music.ui.FavouriteMusicScreen
 import com.avito.avitomusic.ui.theme.AvitoMusicTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
 
                         }
                         composable(Routes.SAVED.route) {
-                            SavedMusicScreen(navController = controller)
+                            FavouriteMusicScreen(navController = controller)
                         }
                         composable(Routes.SEARCH.route) { MusicListScreen(controller) }
                         composable("${Routes.PLAYER.route}/{trackID}/{artistID}") { backStackEntry ->

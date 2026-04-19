@@ -35,10 +35,12 @@ class SavedMusicViewModel @Inject constructor(
     }
 
     fun searchTracks(query: String, context: Context) {
-        val currentState = _state.value
-        if (currentState is SavedMusicState.Loaded) {
-            val filteredTracks = repository.searchTracks(query, context)
-            _state.value = SavedMusicState.Loaded(filteredTracks)
+        viewModelScope.launch {
+            val currentState = _state.value
+            if (currentState is SavedMusicState.Loaded) {
+                val filteredTracks = repository.searchTracks(query, context)
+                _state.value = SavedMusicState.Loaded(filteredTracks)
+            }
         }
     }
 }

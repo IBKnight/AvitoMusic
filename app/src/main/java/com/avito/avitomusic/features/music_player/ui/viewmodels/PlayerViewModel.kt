@@ -57,12 +57,10 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun play() {
-        musicRepository.play()
         startService(application, "PLAY")
     }
 
     fun pause() {
-        musicRepository.pause()
         startService(application, "PAUSE")
     }
 
@@ -71,12 +69,10 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun nextTrack() {
-        musicRepository.nextTrack(tracks.value)
         startService(application, "SKIPNEXT")
     }
 
     fun previousTrack() {
-        musicRepository.previousTrack(tracks.value)
         startService(application, "SKIPPREVOUS")
     }
 

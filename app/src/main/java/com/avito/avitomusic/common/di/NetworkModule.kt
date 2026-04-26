@@ -10,6 +10,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -44,14 +45,26 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiMusicListRepository(apiMusicDataSource: ApiMusicDataSource): IApiMusicListRepository {
-        return ApiMusicListRepository(apiMusicDataSource)
+    fun provideApiMusicListRepository(
+        apiMusicDataSource: ApiMusicDataSource,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): IApiMusicListRepository {
+        return ApiMusicListRepository(
+            apiMusicDataSource,
+            ioDispatcher
+        )
     }
 
     @Provides
     @Singleton
-    fun providePlayerRepository(apiMusicDataSource: ApiMusicDataSource): IPlayerRepository {
-        return PlayerRepository(apiMusicDataSource)
+    fun providePlayerRepository(
+        apiMusicDataSource: ApiMusicDataSource,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): IPlayerRepository {
+        return PlayerRepository(
+            apiMusicDataSource,
+            ioDispatcher
+        )
     }
 
 }

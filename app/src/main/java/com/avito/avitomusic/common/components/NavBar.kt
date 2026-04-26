@@ -44,6 +44,7 @@ fun BottomNavigationBar(navController: NavController) {
                 label = { Text(text = item.title) },
                 selected = currentRoute == item.route,
                 onClick = {
+                    if (navController.currentDestination?.route == item.route) return@NavigationBarItem
                     navController.navigate(item.route) {
                         popUpTo(navController.graph.startDestinationId)
                         launchSingleTop = true
